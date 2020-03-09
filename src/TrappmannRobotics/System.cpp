@@ -1,7 +1,7 @@
 // NAME: System.cpp
 //
 // DESC: Class to query information about the system. Currently with methods to
-//       check the reset flags for the reason of the reboot. 
+//       check the reset flags for the reason of the reboot.
 //
 // This file is part of the TrappmannRobotics-Library for the Arduino environment.
 // https://github.com/ATrappmann/TrappmannRobotics-Library
@@ -63,11 +63,11 @@ uint8_t System::getResetFlags() {
   return resetFlags;
 }
 
-#if defined(ARDUINO_AVR_MEGA) || defined(ARDUINO_AVR_MEGA2560) 
+#if defined(ARDUINO_AVR_MEGA) || defined(ARDUINO_AVR_MEGA2560)
 bool System::isResetByJTAG() {
   return (!isResetByPowerOn() && (resetFlags & (1<<JTRF)));
 }
-#endif  
+#endif
 
 /*
  * There are several reasons for a reset of the Arduino controller.
@@ -83,16 +83,10 @@ bool System::isResetByBrownOut() {
   return (!isResetByPowerOn() && (resetFlags & (1<<BORF)));
 }
 
-/*
- * 
- */
 bool System::isResetByExtern() {
   return (!isResetByPowerOn() && (resetFlags & (1<<EXTRF)));
 }
 
-/*
- * 
- */
 bool System::isResetByPowerOn() {
   return (resetFlags & (1<<PORF));
 }
@@ -101,13 +95,13 @@ bool System::isResetByPowerOn() {
  * Check if bootloader did pass the status of MCUSR in register R2 to our sketch
  * so that the function resetFlagsInit in section ".init0" could initialize the
  * global variable "resetFlags".
- * If not, consider updating the Arduino bootloader. The latest version of 
+ * If not, consider updating the Arduino bootloader. The latest version of
  * optiboot can be found at https://github.com/Optiboot/optiboot
  */
 bool System::hasValidResetFlags() {
   if (0 == resetFlags) return false;
   if (0 != (resetFlags & 0b11100000)) return false;
-  return true;  
+  return true;
 }
 
 /*
