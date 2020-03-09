@@ -1,0 +1,67 @@
+#######################################
+# Syntax Coloring Map For TrappmannRobotics
+####################################### 
+# Class
+#######################################
+
+TrappmannRobotics	KEYWORD1
+WatchdogPrescalerValue	KEYWORD1
+WatchdogCallbackPtr	KEYWORD1
+ConfigHeader	KEYWORD1
+SystemConfig	KEYWORD1
+Watchdog	KEYWORD1
+System	KEYWORD1
+
+#######################################
+# Methods and Functions 
+#######################################	
+
+getUploadTimestamp	KEYWORD2
+getFreeMemory	KEYWORD2
+getProgramCounter	KEYWORD2
+
+toBinaryString	KEYWORD2
+toHexString	KEYWORD2
+getBaseName	KEYWORD2
+getPathName	KEYWORD2
+
+watchdogOn	KEYWORD2
+watchdogOff	KEYWORD2
+watchdogReset	KEYWORD2
+
+getResetFlags	KEYWORD2
+hasValidResetFlags	KEYWORD2
+isResetByJTAG	KEYWORD2
+isResetByWatchdog	KEYWORD2
+isResetByBrownOut	KEYWORD2
+isResetByExtern	KEYWORD2
+isResetByPowerOn	KEYWORD2
+
+SEROUT	KEYWORD2
+
+loadConfig	KEYWORD2
+saveConfig	KEYWORD2
+invalidateEEPROM	KEYWORD2
+init	KEYWORD2
+dumpEEPROM	KEYWORD2
+resetCounter	KEYWORD2
+freeMemoryAtIRQ	KEYWORD2
+programCounterAtIRQ	KEYWORD2
+timeAtIRQ	KEYWORD2
+
+#######################################
+# Constants
+#######################################
+
+LED_PIN	LITERAL1
+
+WDTO_16ms	LITERAL1
+WDTO_32ms	LITERAL1
+WDTO_64ms	LITERAL1
+WDTO_125ms	LITERAL1
+WDTO_250ms	LITERAL1
+WDTO_500ms	LITERAL1
+WDTO_1s	LITERAL1
+WDTO_2s	LITERAL1
+WDTO_4s	LITERAL1
+WDTO_8s	LITERAL1
