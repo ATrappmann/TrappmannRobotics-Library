@@ -161,15 +161,20 @@ be unique for a Sketch. To change it, you have to modify `SystemConfig.cpp`.
 A useful example can be found in the demo Sketch `Watchdog.ino` which is
 included in this library.
 
+# License
 
-Written by Andreas Trappmann.
-MIT license, check LICENSE for more information.
+Copyright (c) 2020 by Andreas Trappmann.
+
+MIT license, check LICENSE file for more information.
+
 All text above must be included in any redistribution
 
 # Release Notes:
 
 Verison 1.1 - 11.03.2020
+
 	* Added documentation.
 
 Version 1.0 - 07.03.2020
+
 	* Initial Version
