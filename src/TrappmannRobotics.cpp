@@ -1,7 +1,7 @@
 // NAME: TrappmannRobotics.cpp
 //
 // DESC: This is the implementation of some useful helper functions.
-// 
+//
 // This file is part of the TrappmannRobotics-Library for the Arduino environment.
 // https://github.com/ATrappmann/TrappmannRobotics-Library
 //
@@ -29,6 +29,10 @@
 //
 #include <TrappmannRobotics.h>
 
+/*
+ * Returns the static string "__DATE__ __TIME__" which is constructed
+ * when this function was compiled.
+ */
 const char *TrappmannRobotics::getUploadTimestamp() {
 	static char *msg = __DATE__ " " __TIME__;
 	return msg;
@@ -46,6 +50,10 @@ const uint32_t TrappmannRobotics::getFreeMemory() {
   return (__brkval ? &topOfStack - __brkval : &topOfStack - __malloc_heap_start);
 }
 
+/*
+ * Returns the program counter to the next instruction after the call to this
+ * function.
+ */
 const uint32_t TrappmannRobotics::getProgramCounter() {
   // get program counter from stack
   uint8_t register PCL, PCH, IND;
@@ -53,7 +61,7 @@ const uint32_t TrappmannRobotics::getProgramCounter() {
     "     in  ZL, 0x3d      ; load SPL to Z-register\n\t"
     "     in  ZH, 0x3e      ; load SPH to Z-register\n\t"
     "     adiw ZL, 10       ; add 1 to get last byte pushed onto the stack\n\t"
-#if defined(ARDUINO_AVR_MEGA) || defined(ARDUINO_AVR_MEGA2560) 
+#if defined(ARDUINO_AVR_MEGA) || defined(ARDUINO_AVR_MEGA2560)
     "     ld  r26, Z+       ; load EIND from stack\n\t"
 #else
     "     clr  r26          ; initialize IND\n\t"

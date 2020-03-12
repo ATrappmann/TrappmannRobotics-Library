@@ -48,8 +48,7 @@ void setup() {
       if (sysconfig.resetCounter > 0) {
         Serial << F("Watchdog counter exceeds limit.\n" \
                     "System halted.\n");
-        Serial.flush();
-        exit(0);
+        System::halt();
       }
 
     }
@@ -83,11 +82,8 @@ void loop() {
   Serial << F("loop #") << (++count) << LF;
   delay(1500);  // wait for watchdog
 
-  Watchdog::watchdogOff();
   Serial.println(F("INTERNAL ERROR: This should never been happend!?"));
-  Serial.println(F("Halting system"));
-  Serial.flush();
-  exit(0);
+  System::halt();
 }
 
 /*

@@ -30,6 +30,7 @@
 //
 #include <TrappmannRobotics.h>
 #include "System.h"
+#include "Watchdog.h"
 #include <Arduino.h>
 
 /*
@@ -108,6 +109,8 @@ bool System::hasValidResetFlags() {
  * Halt system.
  */
 void System::halt() {
+  Watchdog::watchdogOff();
+
   Serial << F("Halt.\n");
   Serial << F("Press RESET to start again\n");
   Serial.flush();
