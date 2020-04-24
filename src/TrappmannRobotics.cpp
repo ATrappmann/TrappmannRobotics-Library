@@ -1,7 +1,7 @@
 // NAME: TrappmannRobotics.cpp
 //
 // DESC: This is the implementation of some useful helper functions.
-//
+// 
 // This file is part of the TrappmannRobotics-Library for the Arduino environment.
 // https://github.com/ATrappmann/TrappmannRobotics-Library
 //
@@ -29,10 +29,6 @@
 //
 #include <TrappmannRobotics.h>
 
-/*
- * Returns the static string "__DATE__ __TIME__" which is constructed
- * when this function was compiled.
- */
 const char *TrappmannRobotics::getUploadTimestamp() {
 	static char *msg = __DATE__ " " __TIME__;
 	return msg;
@@ -50,35 +46,35 @@ const uint32_t TrappmannRobotics::getFreeMemory() {
   return (__brkval ? &topOfStack - __brkval : &topOfStack - __malloc_heap_start);
 }
 
-/*
- * Returns the program counter to the next instruction after the call to this
- * function.
- */
 const uint32_t TrappmannRobotics::getProgramCounter() {
   // get program counter from stack
-  uint8_t register PCL, PCH, IND;
+  uint16_t PC;
+  uint8_t  IND;
   __asm__ __volatile__ (
-    "     in  ZL, 0x3d      ; load SPL to Z-register\n\t"
-    "     in  ZH, 0x3e      ; load SPH to Z-register\n\t"
-    "     adiw ZL, 10       ; add 1 to get last byte pushed onto the stack\n\t"
-#if defined(ARDUINO_AVR_MEGA) || defined(ARDUINO_AVR_MEGA2560)
-    "     ld  r26, Z+       ; load EIND from stack\n\t"
+	".equ SPL,	0x3d			  ; register address of SPL\n\t"\
+	".equ SPH,	0x3e			  ; register address of SPH\n\t"\
+	"	  		rjmp .gpc2		  ; \n\t"
+	".gpc1:		in   ZL, SPL      ; load SPL to Z-register\n\t"
+    "     		in   ZH, SPH      ; load SPH to Z-register\n\t"
+    "     		adiw ZL, 1        ; add 1 to get last byte pushed onto the stack\n\t"
+#if defined(ARDUINO_AVR_MEGA) || defined(ARDUINO_AVR_MEGA2560) 
+    "     		ld   r26, Z+      ; load EIND from stack\n\t"
 #else
-    "     clr  r26          ; initialize IND\n\t"
+    "     		clr  r26          ; initialize IND\n\t"
 #endif
-    "     ld  r25, Z+       ; load PCH from stack\n\t"
-    "     ld  r24, Z        ; load PCL from stack\n\t"
-    "     mov %[PCL], r24   ; save lo-byte of PC\n\t"
-    "     mov %[PCH], r25   ; save hi-byte of PC\n\t"
-    "     mov %[IND], r26   ; save EIND of PC\n\t"
+    "     		ld   r25, Z+      ; load PCH from stack\n\t"
+    "     		ld   r24, Z       ; load PCL from stack\n\t"
+    "		    movw %[PC], r24   ; save PC\n\t"
+    "     		mov  %[IND], r26  ; save EIND of PC\n\t"
+	"			ret 			  ; return\n\t"
+	".gpc2:		rcall .gpc1		  ; call subroutine to push PC on the stack\n\t"
     : /* output */
-      [PCL] "=&d" (PCL),
-      [PCH] "=&d" (PCH),
+      [PC]  "=&d" (PC),
       [IND] "=&d" (IND)
     : /* input */
     : /* clobber list */
       "r24", "r25", "r26", "r30", "r31"
   );
-  uint32_t PC = ((((uint32_t)IND) << 16) | (((uint16_t)PCH) << 8) | PCL) << 1;  // convert word-ptr to byte-ptr
-  return PC;
+  uint32_t LPC = ((((uint32_t)IND) << 16) | PC) << 1;  // convert word-ptr to byte-ptr
+  return LPC;
 }

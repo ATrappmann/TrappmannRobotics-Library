@@ -32,6 +32,7 @@
 #define SYSTEM_H
 
 #include <stdint.h>
+#include <Print.h>
 
 class System {
 private:
@@ -48,7 +49,8 @@ public:
   static bool isResetByBrownOut();
   static bool isResetByExtern();
   static bool isResetByPowerOn();
-
+  static void printResetFlags(Print& out);
+  
   static void halt();
 };
 

@@ -11,6 +11,7 @@ ConfigHeader	KEYWORD1
 SystemConfig	KEYWORD1
 Watchdog	KEYWORD1
 System	KEYWORD1
+CallWithTimeout	KEYWORD1
 
 #######################################
 # Methods and Functions 
@@ -49,6 +50,8 @@ freeMemoryAtIRQ	KEYWORD2
 programCounterAtIRQ	KEYWORD2
 timeAtIRQ	KEYWORD2
 
+callWithTimeout	KEYWORD2
+
 #######################################
 # Constants
 #######################################
@@ -65,3 +68,7 @@ WDTO_1s	LITERAL1
 WDTO_2s	LITERAL1
 WDTO_4s	LITERAL1
 WDTO_8s	LITERAL1
+
+FuncPtr	LITERAL1
+FuncArgs	LITERAL1
+FuncResults	LITERAL1

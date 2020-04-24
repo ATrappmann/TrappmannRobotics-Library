@@ -13,7 +13,7 @@ SystemConfig sysconfig;
 
 void setup() {
   Watchdog::watchdogOff();
-
+  
   Serial.begin(115200);
   while (!Serial);
   Serial << F("------------------------------\n");
@@ -32,25 +32,26 @@ void setup() {
   if (System::isResetByPowerOn())  Serial << F("--> Power-On Reset\n");
   if (System::isResetByExtern())   Serial << F("--> External Reset\n");
   if (System::isResetByWatchdog()) Serial << F("--> Watchdog Reset\n");
-
+    
   sysconfig.dumpEEPROM(Serial);
 
   Serial << F("Checking for Watchdog-Reset... ");
   if (System::isResetByWatchdog()) {
     Serial << F("yes\n");
-
+    
     if (sysconfig.loadConfig()) {
       Serial << F("Watchdog-Counter       = ") << sysconfig.resetCounter << LF;
       Serial << F("Free memory at IRQ     = ") << sysconfig.freeMemoryAtIRQ << F(" bytes\n");
       Serial << F("Program counter at IRQ = 0x"); Serial.println(sysconfig.programCounterAtIRQ, HEX);
-      Serial << F("Time at IRQ            = ") << sysconfig.timeAtIRQ << F(" ms\n");
-
+      Serial << F("Time at IRQ            = ") << sysconfig.timeAtIRQ << F(" ms\n");      
+      
       if (sysconfig.resetCounter > 0) {
         Serial << F("Watchdog counter exceeds limit.\n" \
                     "System halted.\n");
-        System::halt();
+        Serial.flush();
+        exit(0);
       }
-
+      
     }
     else {
       Serial << F("No SystemConfig data was stored in EEPROM\n");
@@ -60,18 +61,18 @@ void setup() {
   }
   else {
     Serial << F("no\n");
-
+    
     // invalidate EEPROM, because startup was not because of Watchdog Reset
     sysconfig.invalidateEEPROM();
     Serial << F("Invalidated EEPROM data!\n");
-
+  
     // start with new configuration
     sysconfig.init();
   }
-
+  
   Serial << F("Setting Watchdog-Timer to 1s\n");
   Watchdog::watchdogOn(WDTO_1s, watchdogCallback);
-
+  
   Serial.println(F("Running..."));
 }
 
@@ -80,13 +81,16 @@ void loop() {
   Watchdog::watchdogReset();  // Zähler zurücksetzen
 
   Serial << F("loop #") << (++count) << LF;
-  delay(1500);  // wait for watchdog
+  delay(1500);  // wati for watchdog
 
+  Watchdog::watchdogOff();
   Serial.println(F("INTERNAL ERROR: This should never been happend!?"));
-  System::halt();
+  Serial.println(F("Halting system"));
+  Serial.flush();
+  exit(0);
 }
 
-/*
+/*   
  * This callback function is called from the Watchdog ISR.
  * It should not contain any blocking function calls.
  */
@@ -99,7 +103,7 @@ void watchdogCallback(uint32_t irqPC) {
   sysconfig.programCounterAtIRQ = irqPC;
   sysconfig.timeAtIRQ = millis();
   sysconfig.saveConfig();
-
+  
   Serial.println("ISR done.");
   Serial.flush();
 }

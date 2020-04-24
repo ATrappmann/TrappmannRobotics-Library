@@ -1,5 +1,5 @@
 // NAME: Watchdog.cpp
-//
+// 
 // DESC: My watchdog implementation file.
 //
 // This file is part of the TrappmannRobotics-Library for the Arduino environment.
@@ -35,7 +35,7 @@
 /*
  * Turn on the watchdog in interrupt and system reset mode and set the given WDT Oscillator Prescaler
  * values.
- * A given callback function will be saved and called by the Watchdog Interrupt Service Routine, if the
+ * A given callback function will be saved and called by the Watchdog Interrupt Service Routine, if the 
  * watchdog has fired. Inside the callback function the sketch may save some important data to the EEPROM.
  */
 static WatchdogCallbackPtr _watchdogCallbackFunc = 0L;
@@ -43,27 +43,27 @@ void Watchdog::watchdogOn(WatchdogPrescalerValue prescalerValue, WatchdogCallbac
 {
   _watchdogCallbackFunc = watchdogCallbackFunc;
 
-  uint8_t register temp_reg;
   uint8_t register wdctrl = ((1<<WDIE) | (1<<WDE) | ((prescalerValue & 0x08) ? (1<<WDP3) : 0) | (prescalerValue & 0x07));
   __asm__ __volatile__ (
-    ".equ MCUSR, 0x34           ; register address for MCUSR\n\t"
-    ".equ WDTCSR, 0x0060        ; register address for WDTCSR\n\t"
+    ".equ MCUSR, 0x34             	; register address for MCUSR\n\t"
+    ".equ WDTCSR, 0x0060          	; register address for WDTCSR\n\t"
+    "	cli                         ; disable all interrupts\n\t"
+    "	wdr                         ; reset watchdog timer\n\t"
 
-    "cli                        ; disable all interrupts\n\t"
-    "wdr                        ; reset watchdog timer\n\t"
-    "out  MCUSR, __zero_reg__   ; reset MCUSR, clear WDRF\n\t"
+	"	eor  r1, r1                	; clear r1\n\t"
+    "	out  0x34, r1    			; reset MCUSR, clear WDRF\n\t"
 
-    "lds  %[TEMPREG], WDTCSR    ; load WDTCSR\n\t"
-    "ori  %[TEMPREG], 0x18      ; enter configuration mode: set WDCE and WDE\n\t"
-    "sts  WDTCSR, %[TEMPREG]    ; set WDTCSR\n\t"
+    "	lds  r24, WDTCSR		   	; load WDTCSR\n\t"
+    "	ori  r24, 0x18      	   	; enter configuration mode: set WDCE and WDE\n\t"
+    "	sts  WDTCSR, r24    		; set WDTCSR\n\t"
 
-    "sts  WDTCSR, %[WDCTRL]     ; enable IRQ and watchdog and set watchdog timer\n\t"
-    "sei                        ; re-enable all interrupts\n\t"
-    : /* output */
-      [TEMPREG] "=&d"  (temp_reg)
+    "	sts  WDTCSR, %[WDCTRL]      ; enable IRQ and set watchdog timer\n\t"
+    "	sei                         ; re-enable all interrupts\n\t"
+    : /* output */ 
     : /* input */
-      [WDCTRL]  "r"  (wdctrl)
+		[WDCTRL]  "r"  (wdctrl)
     : /* clobber list */
+		"r1", "r24"
   );
 }
 
@@ -71,22 +71,25 @@ void Watchdog::watchdogOn(WatchdogPrescalerValue prescalerValue, WatchdogCallbac
  * Completly turn off the watchdog and clear all timer settings.
  */
 void Watchdog::watchdogOff() {
-  uint8_t register temp_reg;
   __asm__ __volatile__ (
-    ".equ MCUSR, 0x34           ; register address for MCUSR\n\t"
-    ".equ WDTCSR, 0x0060        ; register address for WDTCSR\n\t"
+    ".equ MCUSR, 0x34             	; register address for MCUSR\n\t"
+    ".equ WDTCSR, 0x0060          	; register address for WDTCSR\n\t"
+    "	cli                       	; disable all interrupts\n\t"
+    "	wdr                        	; reset watchdog timer\n\t"
+    
+	"	eor  r1, r1                	; clear r1\n\t"
+    "	out  MCUSR, r1		       	; reset MCUSR, clear WDRF\n\t"
 
-    "cli                        ; disable all interrupts\n\t"
-    "wdr                        ; reset watchdog timer\n\t"
-    "out  MCUSR, __zero_reg__   ; reset MCUSR, clear WDRF\n\t"
+    "	lds  r24, WDTCSR		   	; load WDTCSR\n\t"
+    "	ori  r24, 0x18      	   	; enter configuration mode: set WDCE and WDE\n\t"
+    "	sts  WDTCSR, r24    		; set WDTCSR\n\t"
 
-    "lds  %[TEMPREG], WDTCSR    ; load WDTCSR\n\t"
-    "ori  %[TEMPREG], 0x18      ; enter configuration mode: set WDCE and WDE\n\t"
-    "sts  WDTCSR, %[TEMPREG]    ; set WDTCSR\n\t"
-
-    "sts  WDTCSR, __zero_reg__  ; disable watchdog\n\t"
-    "sei                        ; re-enable all interrupts\n\t"
-    : [TEMPREG] "=d" (temp_reg)
+    "	sts  WDTCSR, r1  			; disable watchdog\n\t"
+    "	sei                         ; re-enable all interrupts\n\t"
+    : /* output */
+	: /* input */
+	: /* clobber list */
+		"r1", "r24"
   );
 }
 
@@ -103,7 +106,7 @@ void Watchdog::watchdogReset() {
  * will disable the WDT Interrupt Mode and run the interrupt handler. The second
  * timeout then causes a system reset. The interrupt handler then has one timeout
  * period for backing up parameters, for example, to EEPROM.
- *
+ * 
  * If a callback function was given to save some data to the EEPROM, it will be called.
  * A Write Complete Flag could be a byte in EEPROM indicating whether the backup
  * operation was finished before the system reset. This flag could be checked in the startup
@@ -111,6 +114,7 @@ void Watchdog::watchdogReset() {
  * restoring system state or debugging purposes. The flag should be cleared during
  * initialization to invalidate the parameters if other types of resets occur.
  */
+#ifdef DEFINE_WATCHDOG_ISR
 ISR(WDT_vect) // Watchdog timer interrupt.
 {
   // get program counter from stack
@@ -118,7 +122,7 @@ ISR(WDT_vect) // Watchdog timer interrupt.
   __asm__ __volatile__ (
     "     in  ZL, 0x3d      ; load SPL to Z-register\n\t"
     "     in  ZH, 0x3e      ; load SPH to Z-register\n\t"
-#if defined(ARDUINO_AVR_MEGA) || defined(ARDUINO_AVR_MEGA2560)
+#if defined(ARDUINO_AVR_MEGA) || defined(ARDUINO_AVR_MEGA2560) 
     "     adiw ZL, 26       ; add 1 to get last byte pushed onto the stack\n\t"
     "     ld  r26, Z+       ; load EIND from stack\n\t"
 #else
@@ -142,3 +146,4 @@ ISR(WDT_vect) // Watchdog timer interrupt.
   if (_watchdogCallbackFunc) _watchdogCallbackFunc(irqPC);
   while(1); // wait for 2nd interrupt to reset the system
 }
+#endif

@@ -1,5 +1,5 @@
 // NAME: Watchdog.h
-//
+// 
 // DESC: Headerfile for my watchdog implementation.
 //
 // This file is part of the TrappmannRobotics-Library for the Arduino environment.
@@ -32,7 +32,7 @@
 
 #include <stdint.h>
 
-typedef void (*WatchdogCallbackPtr)(uint32_t irqPC);
+typedef void * (*WatchdogCallbackPtr)(uint32_t irqPC);
 
 enum WatchdogPrescalerValue {
   WDTO_16ms = 0,
@@ -50,7 +50,7 @@ enum WatchdogPrescalerValue {
 class Watchdog {
 private:
   Watchdog() {}
-
+  
 public:
   static void watchdogOn(WatchdogPrescalerValue prescalerValue, WatchdogCallbackPtr watchdogCallbackFunc);
   static void watchdogOff();
