@@ -171,6 +171,10 @@ All text above must be included in any redistribution
 
 # Release Notes:
 
+Version 1.2 - 11.03.2021
+
+	* Modified SketchConfiguration
+	
 Verison 1.1 - 11.03.2020
 
 	* Added documentation.

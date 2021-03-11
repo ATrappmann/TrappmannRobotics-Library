@@ -9,6 +9,7 @@ WatchdogPrescalerValue	KEYWORD1
 WatchdogCallbackPtr	KEYWORD1
 ConfigHeader	KEYWORD1
 SystemConfig	KEYWORD1
+SketchConfiguration	KEYWORD1
 Watchdog	KEYWORD1
 System	KEYWORD1
 CallWithTimeout	KEYWORD1
@@ -42,13 +43,8 @@ SEROUT	KEYWORD2
 
 loadConfig	KEYWORD2
 saveConfig	KEYWORD2
-invalidateEEPROM	KEYWORD2
-init	KEYWORD2
-dumpEEPROM	KEYWORD2
-resetCounter	KEYWORD2
-freeMemoryAtIRQ	KEYWORD2
-programCounterAtIRQ	KEYWORD2
-timeAtIRQ	KEYWORD2
+deleteConfig	KEYWORD2
+isValid	KEYWORD2
 
 callWithTimeout	KEYWORD2
 

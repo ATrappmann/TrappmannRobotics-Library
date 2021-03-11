@@ -1,13 +1,13 @@
 // NAME: SystemConfig.h
 //
-// DESC: Class for storing configuration data to the EEPROM.
+// DESC: Class with system configuration data.
 //
 // This file is part of the TrappmannRobotics-Library for the Arduino environment.
 // https://github.com/ATrappmann/TrappmannRobotics-Library
 //
 // MIT License
 //
-// Copyright (c) 2020 Andreas Trappmann
+// Copyright (c) 2020-21 Andreas Trappmann
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -32,26 +32,12 @@
 
 #include <stdint.h>
 
-class ConfigHeader {
-protected:
-  // The checksum always has to be the first in the list of attributes.
-  // It is stored last, to signal that EEPROM data is valid.
-  uint8_t checksum;
+#define MAGIC_SYSTEMCONFIG	0x42
 
-  // Magic byte which is specific for our sketch to show, that 
-  // this is our configuration dataset.
-  uint8_t magic;
-
-protected:
-  ConfigHeader() {}
-};
-
-class SystemConfig : private ConfigHeader {
-// System config data can be accessed freely
-public:
+struct SystemConfig {
   // Reset cycle counter to discover endless reset loops.
   uint8_t resetCounter;
-  
+
   // Remaining free RAM when this configuration was saved.
   uint32_t freeMemoryAtIRQ;
 
@@ -60,21 +46,14 @@ public:
 
   // Current time when Watchdog fired.
   uint32_t timeAtIRQ;
-  
-public:
-  SystemConfig();
 
-  bool loadConfig();
-  void saveConfig();
+  void init() {
+	  resetCounter = 0;
+	  freeMemoryAtIRQ = 0;
+	  programCounterAtIRQ = 0;
+	  timeAtIRQ = 0;
+  }
 
-  void invalidateEEPROM();
-  void init();
-
-  void dumpEEPROM(Print& out);
-  
-private:
-  bool isValid();
-  uint8_t calcChecksum();
 };
 
 #endif /* SYSTEMCONFIG_H */
