@@ -1,6 +1,8 @@
 // NAME: CallWithTimeout.cpp
 //
 #include "CallWithTimeout.h"
+
+#if defined(__avr__)
 #include <Arduino.h>
 
 static uint16_t alarmSP;
@@ -87,4 +89,5 @@ ISR(WDT_vect) {
       "r26"
   );  
 }
+#endif
 #endif

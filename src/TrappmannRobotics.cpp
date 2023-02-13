@@ -30,23 +30,24 @@
 #include <TrappmannRobotics.h>
 
 const char *TrappmannRobotics::getUploadTimestamp() {
-	static char *msg = __DATE__ " " __TIME__;
+	static const char *msg = __DATE__ " " __TIME__;
 	return msg;
 }
 
+#if defined(__avr__)
 /*
  * Calculate free RAM on the heap which is available for dynamic memory allocation.
  * __brkval is a pointer to the end of heap space or 0, if nothing was allocated.
  * topOfStack is a local variable, which will be allocated on the top of the stack.
  * __malloc_heap_start is a pointer to the start of the heap space.
  */
-const uint32_t TrappmannRobotics::getFreeMemory() {
+uint32_t TrappmannRobotics::getFreeMemory() {
   extern char *__brkval;
   char topOfStack;
   return (__brkval ? &topOfStack - __brkval : &topOfStack - __malloc_heap_start);
 }
 
-const uint32_t TrappmannRobotics::getProgramCounter() {
+uint32_t TrappmannRobotics::getProgramCounter() {
   // get program counter from stack
   uint16_t PC;
   uint8_t  IND;
@@ -78,3 +79,4 @@ const uint32_t TrappmannRobotics::getProgramCounter() {
   uint32_t LPC = ((((uint32_t)IND) << 16) | PC) << 1;  // convert word-ptr to byte-ptr
   return LPC;
 }
+#endif

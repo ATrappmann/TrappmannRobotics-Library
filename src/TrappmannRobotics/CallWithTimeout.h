@@ -5,8 +5,10 @@
 
 #include <TrappmannRobotics/Watchdog.h>
 
+#if defined(__avr__)
 #define DEFINE_TIMEOUT_ISR
 
 bool callWithWatchdog(void (*func)(void *, void *), void *args, void *results, WatchdogPrescalerValue timeout);
+#endif
 
 #endif

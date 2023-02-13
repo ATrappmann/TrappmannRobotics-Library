@@ -35,6 +35,7 @@
 #include <Print.h>
 
 class System {
+#if defined(__avr__)
 private:
   System();
   
@@ -50,7 +51,9 @@ public:
   static bool isResetByExtern();
   static bool isResetByPowerOn();
   static void printResetFlags(Print& out);
-  
+#endif
+
+public:
   static void halt();
 };
 

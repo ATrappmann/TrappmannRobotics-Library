@@ -32,8 +32,8 @@
 
 #include <stdint.h>
 
-#include <TrappmannRobotics/Debug.h>
-#include <TrappmannRobotics/StringHelper.h>
+//#include <TrappmannRobotics_Debug.h>
+#include <TrappmannRobotics_StringHelper.h>
 
 // Arduino pin definitions
 #define LED_PIN LED_BUILTIN
@@ -43,10 +43,11 @@ private:
 	TrappmannRobotics() {}
 	
 public:
-	static const char *	  getUploadTimestamp();
-	static const uint32_t getFreeMemory();
-	static const uint32_t getProgramCounter();
-	
+	static const char *getUploadTimestamp();
+#if defined(__avr__)
+	static uint32_t getFreeMemory();
+	static uint32_t getProgramCounter();
+#endif
 };
 
 #endif /* TRAPPMANNROBOTICS_H */

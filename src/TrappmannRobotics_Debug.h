@@ -1,7 +1,7 @@
-// NAME: StringHelper.h
+// NAME: Debug.h
 //
-// DESC: Helper functions for printing with the stream operator and to format
-//       binary and hexadecimal numbers to a well formed string. 
+// DESC: Helper methods for printing debugging information through the Serial interface.
+//       Printing must be enabled by a "#define DEBUG 1" before including this header.
 //
 // This file is part of the TrappmannRobotics-Library for the Arduino environment.
 // https://github.com/ATrappmann/TrappmannRobotics-Library
@@ -28,29 +28,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
-#ifndef STRINGHELPER_H
-#define STRINGHELPER_H
+#ifndef DEBUG_H
+#define DEBUG_H
 
-#include <WString.h>
-#include <Print.h>
+#include <TrappmannRobotics_StringHelper.h>
 
-#define LF '\n'
-#define CR '\r'
-#define NUL '\0'
+#ifdef DEBUG
+#define SEROUT(msg)  Serial << msg
+#else
+#define SEROUT(msg)
+#endif
 
-// Printing with stream operator
-template<class T> inline Print& operator <<(Print &obj, T arg) { obj.print(arg); return obj; }
-//inline Print& operator <<(Print &obj, float arg) { obj.print(arg, 4); return obj; }
-
-// Hex and Binary printing
-String toBinaryString(const uint8_t value);
-
-String toHexString(const uint8_t value);
-String toHexString(const uint16_t value);
-String toHexString(const uint32_t value);
-
-// Extract filename from path 
-String getBaseName(const char *path);
-String getPathName(const char *path);
-
-#endif /* STRINGHELPER_H */
+#endif /* DEBUG_H */

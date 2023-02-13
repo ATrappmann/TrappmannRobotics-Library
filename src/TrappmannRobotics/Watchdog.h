@@ -30,6 +30,7 @@
 #ifndef WATCHDOG_H
 #define WATCHDOG_H
 
+#if defined(__avr__)
 #include <stdint.h>
 
 typedef void * (*WatchdogCallbackPtr)(uint32_t irqPC);
@@ -56,5 +57,6 @@ public:
   static void watchdogOff();
   static void watchdogReset();
 };
+#endif
 
 #endif /* WATCHDOG_H */

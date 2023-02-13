@@ -28,7 +28,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
-#include <TrappmannRobotics/StringHelper.h>
+#include <TrappmannRobotics_StringHelper.h>
 
 String toBinaryString(const uint8_t value) {
   static String buffer;

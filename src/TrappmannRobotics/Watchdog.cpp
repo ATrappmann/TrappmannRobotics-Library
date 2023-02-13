@@ -28,6 +28,8 @@
 // SOFTWARE.
 //
 #include "Watchdog.h"
+
+#if defined(__avr__)
 #include <Arduino.h>
 #include <avr/wdt.h>
 #include <avr/interrupt.h>
@@ -146,4 +148,5 @@ ISR(WDT_vect) // Watchdog timer interrupt.
   if (_watchdogCallbackFunc) _watchdogCallbackFunc(irqPC);
   while(1); // wait for 2nd interrupt to reset the system
 }
+#endif
 #endif
