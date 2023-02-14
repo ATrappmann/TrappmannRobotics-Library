@@ -1,5 +1,5 @@
 // NAME: TrappmannRobotics.h
-// 
+//
 // DESC: Header file of the TrappmannRobotics-Library.
 //
 // This file is part of the TrappmannRobotics-Library for the Arduino environment.
@@ -7,7 +7,7 @@
 //
 // MIT License
 //
-// Copyright (c) 2020 Andreas Trappmann
+// Copyright (c) 2020-2023 Andreas Trappmann
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -32,7 +32,6 @@
 
 #include <stdint.h>
 
-//#include <TrappmannRobotics_Debug.h>
 #include <TrappmannRobotics_StringHelper.h>
 
 // Arduino pin definitions
@@ -41,7 +40,7 @@
 class TrappmannRobotics {
 private:
 	TrappmannRobotics() {}
-	
+
 public:
 	static const char *getUploadTimestamp();
 #if defined(__avr__)
