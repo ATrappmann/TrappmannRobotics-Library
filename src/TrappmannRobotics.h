@@ -45,8 +45,9 @@ private:
 public:
 	static const char *	  getUploadTimestamp();
 	static const uint32_t getFreeMemory();
+#if !defined(TEENSYDUINO)
 	static const uint32_t getProgramCounter();
-	
+#endif	
 };
 
 #endif /* TRAPPMANNROBOTICS_H */

@@ -1,5 +1,7 @@
 // NAME: CallWithTimeout.cpp
 //
+#if !defined(TEENSYDUINO)
+
 #include "CallWithTimeout.h"
 #include <Arduino.h>
 
@@ -87,4 +89,6 @@ ISR(WDT_vect) {
       "r26"
   );  
 }
-#endif
+#endif /* DEFINE_TIMEOUT_ISR */
+
+#endif /* !defined(TEENSYDUINO) */

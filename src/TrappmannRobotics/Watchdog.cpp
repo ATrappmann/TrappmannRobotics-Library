@@ -27,6 +27,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
+#if !defined(TEENSYDUINO)
+
 #include "Watchdog.h"
 #include <Arduino.h>
 #include <avr/wdt.h>
@@ -147,3 +149,5 @@ ISR(WDT_vect) // Watchdog timer interrupt.
   while(1); // wait for 2nd interrupt to reset the system
 }
 #endif
+
+#endif /* !defined(TEENSYDUINO) */

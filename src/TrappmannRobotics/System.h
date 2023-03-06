@@ -35,6 +35,7 @@
 #include <Print.h>
 
 class System {
+#if !defined(TEENSYDUINO)	
 private:
   System();
   
@@ -50,7 +51,8 @@ public:
   static bool isResetByExtern();
   static bool isResetByPowerOn();
   static void printResetFlags(Print& out);
-  
+#endif /* !defined(TEENSYDUINO) */
+public:  
   static void halt();
 };
 

@@ -32,6 +32,7 @@
 #include "System.h"
 #include <Arduino.h>
 
+#if !defined(TEENSYDUINO)
 /*
  * First, we need a variable to hold the reset cause that can be written before
  * early sketch initialization (that might change r2), and won't be reset by the
@@ -120,6 +121,8 @@ bool System::hasValidResetFlags() {
 //  if (0 != (resetFlags & 0b11100000)) return false;
   return true;  
 }
+
+#endif /* !defined(TEENSYDUINO) */
 
 /*
  * Halt system.

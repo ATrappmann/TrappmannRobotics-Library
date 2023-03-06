@@ -84,7 +84,7 @@ private:
   uint8_t calcChecksum() {
     uint8_t checksum = 0;
     uint8_t *p =(uint8_t*)this;
-    for (int i=0; i<sizeof(T); i++) {
+    for (unsigned int i=0; i<sizeof(T); i++) {
       checksum ^= p[1+i]; // skip checksum field
     }
     return checksum;

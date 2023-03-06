@@ -30,7 +30,7 @@
 #include <TrappmannRobotics.h>
 
 const char *TrappmannRobotics::getUploadTimestamp() {
-	static char *msg = __DATE__ " " __TIME__;
+	static const char *msg = __DATE__ " " __TIME__;
 	return msg;
 }
 
@@ -43,9 +43,14 @@ const char *TrappmannRobotics::getUploadTimestamp() {
 const uint32_t TrappmannRobotics::getFreeMemory() {
   extern char *__brkval;
   char topOfStack;
+#if defined(CORE_TEENSY)
+  return &topOfStack - __brkval;
+#else
   return (__brkval ? &topOfStack - __brkval : &topOfStack - __malloc_heap_start);
+#endif
 }
 
+#if !defined(TEENSYDUINO)
 const uint32_t TrappmannRobotics::getProgramCounter() {
   // get program counter from stack
   uint16_t PC;
@@ -78,3 +83,4 @@ const uint32_t TrappmannRobotics::getProgramCounter() {
   uint32_t LPC = ((((uint32_t)IND) << 16) | PC) << 1;  // convert word-ptr to byte-ptr
   return LPC;
 }
+#endif /* __arm__ */

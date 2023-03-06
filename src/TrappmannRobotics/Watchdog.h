@@ -30,6 +30,8 @@
 #ifndef WATCHDOG_H
 #define WATCHDOG_H
 
+#if !defined(TEENSYDUINO)
+
 #include <stdint.h>
 
 typedef void * (*WatchdogCallbackPtr)(uint32_t irqPC);
@@ -57,4 +59,5 @@ public:
   static void watchdogReset();
 };
 
+#endif /* !defined(TEENSYDUINO) */
 #endif /* WATCHDOG_H */

@@ -35,7 +35,9 @@
 #include <Print.h>
 
 #define LF '\n'
+#if !defined(TEENSYDUINO)
 #define CR '\r'
+#endif
 #define NUL '\0'
 
 // Printing with stream operator
@@ -48,6 +50,7 @@ String toBinaryString(const uint8_t value);
 String toHexString(const uint8_t value);
 String toHexString(const uint16_t value);
 String toHexString(const uint32_t value);
+String toHexString(const void *ptr);
 
 // Extract filename from path 
 String getBaseName(const char *path);
