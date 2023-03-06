@@ -84,4 +84,6 @@ const uint32_t TrappmannRobotics::getProgramCounter() {
   uint32_t LPC = ((((uint32_t)IND) << 16) | PC) << 1;  // convert word-ptr to byte-ptr
   return LPC;
 }
-#endif /* __arm__ */
+#endif /* TEENSYDUNINO */
+#endif /* __avr__ */
+

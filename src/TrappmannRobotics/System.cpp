@@ -124,8 +124,6 @@ bool System::hasValidResetFlags() {
 }
 #endif
 
-#endif /* !defined(TEENSYDUINO) */
-
 /*
  * Halt system.
  */
