@@ -1,7 +1,7 @@
 // NAME: System.cpp
 //
 // DESC: Class to query information about the system. Currently with methods to
-//       check the reset flags for the reason of the reboot. 
+//       check the reset flags for the reason of the reboot.
 //
 // This file is part of the TrappmannRobotics-Library for the Arduino environment.
 // https://github.com/ATrappmann/TrappmannRobotics-Library
@@ -32,7 +32,8 @@
 #include "System.h"
 #include <Arduino.h>
 
-#if !defined(TEENSYDUINO)
+#if defined(__avr__)
+
 /*
  * First, we need a variable to hold the reset cause that can be written before
  * early sketch initialization (that might change r2), and won't be reset by the
@@ -64,11 +65,11 @@ uint8_t System::getResetFlags() {
   return resetFlags;
 }
 
-#if defined(ARDUINO_AVR_MEGA) || defined(ARDUINO_AVR_MEGA2560) 
+#if defined(ARDUINO_AVR_MEGA) || defined(ARDUINO_AVR_MEGA2560)
 bool System::isResetByJTAG() {
   return (!isResetByPowerOn() && (resetFlags & (1<<JTRF)));
 }
-#endif  
+#endif
 
 /*
  * There are several reasons for a reset of the Arduino controller.
@@ -85,23 +86,23 @@ bool System::isResetByBrownOut() {
 }
 
 /*
- * 
+ *
  */
 bool System::isResetByExtern() {
   return (!isResetByPowerOn() && (resetFlags & (1<<EXTRF)));
 }
 
 /*
- * 
+ *
  */
 bool System::isResetByPowerOn() {
   return (resetFlags & (1<<PORF));
 }
 
 void System::printResetFlags(Print& out) {
-#if defined(ARDUINO_AVR_MEGA) || defined(ARDUINO_AVR_MEGA2560) 
+#if defined(ARDUINO_AVR_MEGA) || defined(ARDUINO_AVR_MEGA2560)
   if (resetFlags & (1<<JTRF))	out.print("JTRF ");
-#endif  
+#endif
   if (resetFlags & (1<<WDRF))	out.print("WDRF ");
   if (resetFlags & (1<<BORF))	out.print("BORF ");
   if (resetFlags & (1<<EXTRF))	out.print("EXTRF ");
@@ -113,14 +114,15 @@ void System::printResetFlags(Print& out) {
  * Check if bootloader did pass the status of MCUSR in register R2 to our sketch
  * so that the function resetFlagsInit in section ".init0" could initialize the
  * global variable "resetFlags".
- * If not, consider updating the Arduino bootloader. The latest version of 
+ * If not, consider updating the Arduino bootloader. The latest version of
  * optiboot can be found at https://github.com/Optiboot/optiboot
  */
 bool System::hasValidResetFlags() {
   if (0 == resetFlags) return false;
 //  if (0 != (resetFlags & 0b11100000)) return false;
-  return true;  
+  return true;
 }
+#endif
 
 #endif /* !defined(TEENSYDUINO) */
 

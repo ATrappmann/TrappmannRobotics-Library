@@ -1,4 +1,4 @@
-// NAME: StringHelper.h
+// NAME: StringHelper.cpp
 //
 // DESC: Helper functions for printing with the stream operator and to format
 //       binary and hexadecimal numbers to a well formed string. 
@@ -28,32 +28,59 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
-#ifndef STRINGHELPER_H
-#define STRINGHELPER_H
+#include <TrappmannRobotics_StringHelper.h>
 
-#include <WString.h>
-#include <Print.h>
+String toBinaryString(const uint8_t value) {
+  static String buffer;
+  buffer = "0000000" + String(value, BIN);
+  return buffer.substring(buffer.length()-8);
+}
 
-#define LF '\n'
-#if !defined(TEENSYDUINO)
-#define CR '\r'
-#endif
-#define NUL '\0'
+String toHexString(const uint8_t value) {
+  static String buffer;
+  buffer = "0" + String(value, HEX);
+  return buffer.substring(buffer.length()-2);  
+}
 
-// Printing with stream operator
-template<class T> inline Print& operator <<(Print &obj, T arg) { obj.print(arg); return obj; }
-//inline Print& operator <<(Print &obj, float arg) { obj.print(arg, 4); return obj; }
+String toHexString(const uint16_t value) {
+  static String buffer;
+  buffer = "000" + String(value, HEX);
+  return buffer.substring(buffer.length()-4);  
+}
 
-// Hex and Binary printing
-String toBinaryString(const uint8_t value);
+String toHexString(const uint32_t value) {
+  static String buffer;
+  buffer = "0000000" + String(value, HEX);
+  return buffer.substring(buffer.length()-8);  
+}
 
-String toHexString(const uint8_t value);
-String toHexString(const uint16_t value);
-String toHexString(const uint32_t value);
-String toHexString(const void *ptr);
+String toHexString(const void *ptr) {
+  if (2 == sizeof(void *)) {
+	return toHexString((uint16_t)ptr);
+  }
+  else return toHexString((uint32_t)ptr);
+}
 
-// Extract filename from path 
-String getBaseName(const char *path);
-String getPathName(const char *path);
-
-#endif /* STRINGHELPER_H */
+String getBaseName(const char *path) {
+  const String pathName = path;
+  int idx = pathName.lastIndexOf('\\');
+  String baseName;
+  if (idx > 0) {
+	baseName = pathName.substring(idx+1);
+  } else {
+	baseName = pathName;
+  }
+  return baseName;
+}
+	
+String getPathName(const char *path) {
+  const String fullPathName = path;
+  int idx = fullPathName.lastIndexOf('\\');
+  String pathName;
+  if (idx > 0) {
+	pathName = fullPathName.substring(0, idx);
+  } else {
+	pathName = ".";
+  }
+  return pathName;
+}

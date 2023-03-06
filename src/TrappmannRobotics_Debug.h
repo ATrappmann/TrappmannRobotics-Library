@@ -1,7 +1,7 @@
-// NAME: System.h
+// NAME: Debug.h
 //
-// DESC: Class to query information about the system. Currently with methods to
-//       check the reset flags for the reason of the reboot.
+// DESC: Helper methods for printing debugging information through the Serial interface.
+//       Printing must be enabled by a "#define DEBUG 1" before including this header.
 //
 // This file is part of the TrappmannRobotics-Library for the Arduino environment.
 // https://github.com/ATrappmann/TrappmannRobotics-Library
@@ -28,33 +28,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
-#ifndef SYSTEM_H
-#define SYSTEM_H
+#ifndef DEBUG_H
+#define DEBUG_H
 
-#include <stdint.h>
-#include <Print.h>
+#include <TrappmannRobotics_StringHelper.h>
 
-class System {
-#if defined(__avr__)
-private:
-  System();
-
-public:
-  static uint8_t getResetFlags();
-  static bool hasValidResetFlags();
-
-#if defined(ARDUINO_AVR_MEGA) || defined(ARDUINO_AVR_MEGA2560)
-  static bool isResetByJTAG();
-#endif
-  static bool isResetByWatchdog();
-  static bool isResetByBrownOut();
-  static bool isResetByExtern();
-  static bool isResetByPowerOn();
-  static void printResetFlags(Print& out);
+#ifdef DEBUG
+#define SEROUT(msg)  Serial << msg
+#else
+#define SEROUT(msg)
 #endif
 
-public:
-  static void halt();
-};
-
-#endif /* SYSTEM_H */
+#endif /* DEBUG_H */

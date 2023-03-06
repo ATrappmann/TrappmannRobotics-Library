@@ -1,13 +1,13 @@
 // NAME: TrappmannRobotics.cpp
 //
 // DESC: This is the implementation of some useful helper functions.
-// 
+//
 // This file is part of the TrappmannRobotics-Library for the Arduino environment.
 // https://github.com/ATrappmann/TrappmannRobotics-Library
 //
 // MIT License
 //
-// Copyright (c) 2020 Andreas Trappmann
+// Copyright (c) 2020-2023 Andreas Trappmann
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -34,13 +34,14 @@ const char *TrappmannRobotics::getUploadTimestamp() {
 	return msg;
 }
 
+#if defined(__avr__)
 /*
  * Calculate free RAM on the heap which is available for dynamic memory allocation.
  * __brkval is a pointer to the end of heap space or 0, if nothing was allocated.
  * topOfStack is a local variable, which will be allocated on the top of the stack.
  * __malloc_heap_start is a pointer to the start of the heap space.
  */
-const uint32_t TrappmannRobotics::getFreeMemory() {
+uint32_t TrappmannRobotics::getFreeMemory() {
   extern char *__brkval;
   char topOfStack;
 #if defined(CORE_TEENSY)
@@ -62,7 +63,7 @@ const uint32_t TrappmannRobotics::getProgramCounter() {
 	".gpc1:		in   ZL, SPL      ; load SPL to Z-register\n\t"
     "     		in   ZH, SPH      ; load SPH to Z-register\n\t"
     "     		adiw ZL, 1        ; add 1 to get last byte pushed onto the stack\n\t"
-#if defined(ARDUINO_AVR_MEGA) || defined(ARDUINO_AVR_MEGA2560) 
+#if defined(ARDUINO_AVR_MEGA) || defined(ARDUINO_AVR_MEGA2560)
     "     		ld   r26, Z+      ; load EIND from stack\n\t"
 #else
     "     		clr  r26          ; initialize IND\n\t"

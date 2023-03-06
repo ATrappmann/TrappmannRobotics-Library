@@ -1,5 +1,5 @@
 // NAME: TrappmannRobotics.h
-// 
+//
 // DESC: Header file of the TrappmannRobotics-Library.
 //
 // This file is part of the TrappmannRobotics-Library for the Arduino environment.
@@ -7,7 +7,7 @@
 //
 // MIT License
 //
-// Copyright (c) 2020 Andreas Trappmann
+// Copyright (c) 2020-2023 Andreas Trappmann
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -32,8 +32,7 @@
 
 #include <stdint.h>
 
-#include <TrappmannRobotics/Debug.h>
-#include <TrappmannRobotics/StringHelper.h>
+#include <TrappmannRobotics_StringHelper.h>
 
 // Arduino pin definitions
 #define LED_PIN LED_BUILTIN
@@ -41,13 +40,13 @@
 class TrappmannRobotics {
 private:
 	TrappmannRobotics() {}
-	
+
 public:
-	static const char *	  getUploadTimestamp();
-	static const uint32_t getFreeMemory();
-#if !defined(TEENSYDUINO)
-	static const uint32_t getProgramCounter();
-#endif	
+	static const char *getUploadTimestamp();
+#if defined(__avr__)
+	static uint32_t getFreeMemory();
+	static uint32_t getProgramCounter();
+#endif
 };
 
 #endif /* TRAPPMANNROBOTICS_H */
