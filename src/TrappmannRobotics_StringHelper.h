@@ -36,7 +36,9 @@
 
 #if defined(__avr__)
 #define LF '\n'
+#if !defined(TEENSYDUINO)
 #define CR '\r'
+#endif
 #define NUL '\0'
 #endif
 
@@ -50,6 +52,7 @@ String toBinaryString(const uint8_t value);
 String toHexString(const uint8_t value);
 String toHexString(const uint16_t value);
 String toHexString(const uint32_t value);
+String toHexString(const void *ptr);
 
 // Extract filename from path 
 String getBaseName(const char *path);

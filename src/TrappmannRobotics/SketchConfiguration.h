@@ -50,24 +50,26 @@ public:
 
 public:
   bool loadConfig(const uint8_t magic) {
-    EEPROM.get(EEPROM_CONFIG_ADDR, *this);
+    return loadConfig(EEPROM_CONFIG_ADDR, magic);
+  }
+  bool loadConfig(const uint16_t addr, const uint8_t magic) {
+    EEPROM.get(addr, *this);
     return isValid(magic);
   }
 
   void saveConfig(const uint8_t magic) {
-    // start writing config data to EEPROM
-    this->checksum = 0;
+    saveConfig(EEPROM_CONFIG_ADDR, magic);
+  }
+  void saveConfig(const uint16_t addr, const uint8_t magic) {
     this->magic = magic;
+    this->checksum = calcChecksum();
     EEPROM.put(EEPROM_CONFIG_ADDR, *this);
-
-    // to show that saving data to the EEPROM was successful,
-    // last thing to do is calculate and store the checksum to
-    // make EEPROM data valid.
-    checksum = calcChecksum();
-    EEPROM.update(EEPROM_CONFIG_ADDR, checksum);
   }
 
   void deleteConfig() {
+    deleteConfig(EEPROM_CONFIG_ADDR);
+  }
+  void deleteConfig(const uint16_t addr) {
     checksum = 0;
     EEPROM.update(EEPROM_CONFIG_ADDR, checksum);
   }
@@ -82,7 +84,7 @@ private:
   uint8_t calcChecksum() {
     uint8_t checksum = 0;
     uint8_t *p =(uint8_t*)this;
-    for (int i=0; i<sizeof(T); i++) {
+    for (unsigned int i=0; i<sizeof(T); i++) {
       checksum ^= p[1+i]; // skip checksum field
     }
     return checksum;

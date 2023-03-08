@@ -54,6 +54,13 @@ String toHexString(const uint32_t value) {
   return buffer.substring(buffer.length()-8);  
 }
 
+String toHexString(const void *ptr) {
+  if (2 == sizeof(void *)) {
+	return toHexString((uint16_t)ptr);
+  }
+  else return toHexString((uint32_t)ptr);
+}
+
 String getBaseName(const char *path) {
   const String pathName = path;
   int idx = pathName.lastIndexOf('\\');

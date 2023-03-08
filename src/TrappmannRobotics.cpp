@@ -44,10 +44,15 @@ const char *TrappmannRobotics::getUploadTimestamp() {
 uint32_t TrappmannRobotics::getFreeMemory() {
   extern char *__brkval;
   char topOfStack;
+#if defined(CORE_TEENSY)
+  return &topOfStack - __brkval;
+#else
   return (__brkval ? &topOfStack - __brkval : &topOfStack - __malloc_heap_start);
+#endif
 }
 
-uint32_t TrappmannRobotics::getProgramCounter() {
+#if !defined(TEENSYDUINO)
+const uint32_t TrappmannRobotics::getProgramCounter() {
   // get program counter from stack
   uint16_t PC;
   uint8_t  IND;
@@ -79,4 +84,6 @@ uint32_t TrappmannRobotics::getProgramCounter() {
   uint32_t LPC = ((((uint32_t)IND) << 16) | PC) << 1;  // convert word-ptr to byte-ptr
   return LPC;
 }
-#endif
+#endif /* TEENSYDUNINO */
+#endif /* __avr__ */
+

@@ -1,5 +1,7 @@
 // NAME: CallWithTimeout.cpp
 //
+#if !defined(TEENSYDUINO)
+
 #include "CallWithTimeout.h"
 
 #if defined(__avr__)
@@ -20,7 +22,7 @@ bool callWithWatchdog(void (*func)(void *, void*), void *args, void *results, Wa
     : /* output */\
       [ASP]  "=&d"  (alarmSP)\
   );
-  
+
   // call the given function with its parameters
   asm volatile (
     "   movw  r22, %[RSLT]      ; load results ptr as 2nd argument to registers 22/23\n\t"
@@ -32,7 +34,7 @@ bool callWithWatchdog(void (*func)(void *, void*), void *args, void *results, Wa
       [ARGS]  "d"   (args),
       [RSLT]  "d"   (results)
     : /* clobber list */
-      /* save all called-saved registers (r2-r17, r28-r29) which could be 
+      /* save all called-saved registers (r2-r17, r28-r29) which could be
        * moddified by calling the given function
        */
       "r2", "r3", "r4", "r5", "r6", "r7", "r8", "r9",
@@ -41,7 +43,7 @@ bool callWithWatchdog(void (*func)(void *, void*), void *args, void *results, Wa
       /* registers used by our code */
       "r22", "r23", "r24", "r25"
   );
-  
+
   // check if watchdog was triggered (WDIE is clear) and set return code
   asm volatile (
     ".equ WDTCSR, 0x0060            ; register address for WDTCSR\n\t"
@@ -58,9 +60,9 @@ bool callWithWatchdog(void (*func)(void *, void*), void *args, void *results, Wa
     : /* clobber list */
       "r24", "r25"
   );
-  
+
   Watchdog::watchdogOff();
-  
+
   return alarmRC;
 }
 
@@ -72,9 +74,9 @@ ISR(WDT_vect) {
   // r26 is pushed to the stack (1 byte)
   asm volatile (
     "     cli                     ; clear global interrupt flag\n\t"
-#if defined(ARDUINO_AVR_MEGA) || defined(ARDUINO_AVR_MEGA2560) 
+#if defined(ARDUINO_AVR_MEGA) || defined(ARDUINO_AVR_MEGA2560)
 	"     ldi	r26, 9			  ; offset for Mega with 3-byte return address\n\t"
-#else	
+#else
     "     ldi   r26, 8            ; offset for Uno with 2-byte return address\n\t"
 #endif
     "     sub   %A[ALARMSP], r26  ; sub 6 for registers pushed to stack and 2/3 for return address\n\t"
@@ -87,7 +89,8 @@ ISR(WDT_vect) {
       [ALARMSP] "d"   (alarmSP)
     : /* clobber list */
       "r26"
-  );  
+  );
 }
+#endif
 #endif
 #endif

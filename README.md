@@ -159,24 +159,28 @@ See the `Watchdog` example from this library.
 unwanted fireing of the Watchdog. Call this method in the `loop()` function
 of your Sketch.
 
-## SystemConfig
-The `class SystemConfig` is an example class on how to save important
+## SketchConfiguration
+The `class SketchConfiguration` is a template class to save important
 configuration data of your Sketch to the EEPROM of your Arduino board.
 The configuration is protected by a checksum and a magic byte, which should
-be unique for a Sketch. To change it, you have to modify `SystemConfig.cpp`.
+be unique for a Sketch.
 
-A useful example can be found in the demo Sketch `Watchdog.ino` which is
+A useful example can be found in the demo Sketch `Config.ino` which is
 included in this library.
 
 # License
 
-Copyright (c) 2020 by Andreas Trappmann.
+Copyright (c) 2020-22 by Andreas Trappmann.
 
 MIT license, check LICENSE file for more information.
 
 All text above must be included in any redistribution
 
 # Release Notes:
+
+Version 1.2.1 - 08.03.2022
+
+	* Minor modifications to SketchConfiguration
 
 Version 1.2 - 11.03.2021
 
