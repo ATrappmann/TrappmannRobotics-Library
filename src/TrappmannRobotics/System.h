@@ -1,7 +1,7 @@
 // NAME: System.h
 //
 // DESC: Class to query information about the system. Currently with methods to
-//       check the reset flags for the reason of the reboot. 
+//       check the reset flags for the reason of the reboot.
 //
 // This file is part of the TrappmannRobotics-Library for the Arduino environment.
 // https://github.com/ATrappmann/TrappmannRobotics-Library
@@ -38,23 +38,24 @@ class System {
 #if defined(__avr__)
 private:
   System();
-  
+
 public:
   static uint8_t getResetFlags();
   static bool hasValidResetFlags();
-  
-#if defined(ARDUINO_AVR_MEGA) || defined(ARDUINO_AVR_MEGA2560) 
+
+#if defined(ARDUINO_AVR_MEGA) || defined(ARDUINO_AVR_MEGA2560)
   static bool isResetByJTAG();
-#endif  
+#endif
   static bool isResetByWatchdog();
   static bool isResetByBrownOut();
   static bool isResetByExtern();
   static bool isResetByPowerOn();
   static void printResetFlags(Print& out);
-#endif
+#endif /* __avr__ */
 
 public:
   static void halt();
+  static void halt(const String& msg);
 };
 
 #endif /* SYSTEM_H */

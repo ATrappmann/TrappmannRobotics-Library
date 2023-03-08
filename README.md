@@ -108,6 +108,13 @@ on the internal LED and calls `exit(0)`.
 This method is useful for debugging to stop the Sketch at unexpected
 conditions.
 
+### halt(const String& msg)
+`halt` is a convenience method which prints a short message to `Serial`, turns
+on the internal LED and calls `exit(0)`.
+
+This method is useful for debugging to stop the Sketch at unexpected
+conditions.
+
 ## Watchdog
 The `class Watchdog` simplifies the use of the builtin Watchdog for Arduino
 boards. When turned on, a given callback functions will be called from the
@@ -174,7 +181,7 @@ All text above must be included in any redistribution
 Version 1.2 - 11.03.2021
 
 	* Modified SketchConfiguration
-	
+
 Verison 1.1 - 11.03.2020
 
 	* Added documentation.
