@@ -55,10 +55,13 @@ String toHexString(const uint32_t value) {
 }
 
 String toHexString(const void *ptr) {
+#if !defined(TEENSYDUINO)
   if (2 == sizeof(void *)) {
 	return toHexString((uint16_t)ptr);
   }
-  else return toHexString((uint32_t)ptr);
+  else
+#endif
+	  return toHexString((uint32_t)ptr);
 }
 
 String getBaseName(const char *path) {

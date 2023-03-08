@@ -28,8 +28,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
-#ifndef SYSTEM_H
-#define SYSTEM_H
+#ifndef TRAPPMANNROBOTICS_SYSTEM_H
+#define TRAPPMANNROBOTICS_SYSTEM_H
 
 #include <stdint.h>
 #include <Print.h>
@@ -58,4 +58,4 @@ public:
   static void halt(const String& msg);
 };
 
-#endif /* SYSTEM_H */
+#endif /* TRAPPMANNROBOTICS_SYSTEM_H */

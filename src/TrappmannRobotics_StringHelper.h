@@ -1,7 +1,7 @@
 // NAME: StringHelper.h
 //
 // DESC: Helper functions for printing with the stream operator and to format
-//       binary and hexadecimal numbers to a well formed string. 
+//       binary and hexadecimal numbers to a well formed string.
 //
 // This file is part of the TrappmannRobotics-Library for the Arduino environment.
 // https://github.com/ATrappmann/TrappmannRobotics-Library
@@ -52,9 +52,9 @@ String toBinaryString(const uint8_t value);
 String toHexString(const uint8_t value);
 String toHexString(const uint16_t value);
 String toHexString(const uint32_t value);
-String toHexString(const void *ptr);
+String toHexString(const void *ptr); 
 
-// Extract filename from path 
+// Extract filename from path
 String getBaseName(const char *path);
 String getPathName(const char *path);
 

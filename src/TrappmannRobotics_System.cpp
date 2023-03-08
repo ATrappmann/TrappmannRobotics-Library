@@ -29,7 +29,7 @@
 // SOFTWARE.
 //
 #include <TrappmannRobotics.h>
-#include "System.h"
+#include "TrappmannRobotics_System.h"
 #include <Arduino.h>
 
 #if defined(__avr__)
