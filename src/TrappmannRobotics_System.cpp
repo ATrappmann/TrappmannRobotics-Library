@@ -128,8 +128,7 @@ bool System::hasValidResetFlags() {
  * Halt system.
  */
 void System::halt() {
-  Serial << F("Halt.\n");
-  Serial << F("Press RESET to start again\n");
+  Serial << F("Halted! Press RESET to start again\n");
   Serial.flush();
 
   pinMode(LED_PIN, OUTPUT);
@@ -139,6 +138,6 @@ void System::halt() {
 }
 
 void System::halt(const String& msg) {
-  Serial << msg << '\n';
+  Serial << "ALERT: " << msg << '\n';
   halt();
 }
