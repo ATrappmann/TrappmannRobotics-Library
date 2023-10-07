@@ -31,7 +31,7 @@
 
 #include "Watchdog.h"
 
-#if defined(__avr__)
+#if defined(ARDUINO_ARCH_AVR)
 #include <Arduino.h>
 #include <avr/wdt.h>
 #include <avr/interrupt.h>

@@ -30,7 +30,7 @@
 #ifndef WATCHDOG_H
 #define WATCHDOG_H
 
-#if defined(__avr__)
+#if defined(ARDUINO_ARCH_AVR)
 #include <stdint.h>
 
 typedef void * (*WatchdogCallbackPtr)(uint32_t irqPC);
@@ -57,7 +57,9 @@ public:
   static void watchdogOff();
   static void watchdogReset();
 };
+
+#else
+#error "Define your archticture here!"
 #endif
 
-#endif /* !defined(TEENSYDUINO) */
 #endif /* WATCHDOG_H */
